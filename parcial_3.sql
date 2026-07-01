@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 30-06-2026 a las 10:58:48
--- Versión del servidor: 9.1.0
--- Versión de PHP: 8.3.14
+-- Tiempo de generación: 01-07-2026 a las 17:33:04
+-- Versión del servidor: 8.4.7
+-- Versión de PHP: 8.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -901,6 +901,98 @@ INSERT INTO `cat_tiposangre` (`id`, `Nombre`) VALUES
 (6, 'B+'),
 (7, 'AB-'),
 (8, 'AB+');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cat_tipos_planilla`
+--
+
+DROP TABLE IF EXISTS `cat_tipos_planilla`;
+CREATE TABLE IF NOT EXISTS `cat_tipos_planilla` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre_planilla` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `cat_tipos_planilla`
+--
+
+INSERT INTO `cat_tipos_planilla` (`id`, `nombre_planilla`) VALUES
+(1, 'Permanente'),
+(2, 'Eventual'),
+(3, 'Interino');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `colaboradores`
+--
+
+DROP TABLE IF EXISTS `colaboradores`;
+CREATE TABLE IF NOT EXISTS `colaboradores` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cedula` varchar(20) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `direccion` text,
+  `estado_civil` int DEFAULT NULL,
+  `firma_digital` varchar(255) DEFAULT NULL,
+  `fecha_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `colaboradores`
+--
+
+INSERT INTO `colaboradores` (`id`, `cedula`, `nombre`, `apellido`, `fecha_nacimiento`, `correo`, `telefono`, `direccion`, `estado_civil`, `firma_digital`, `fecha_registro`) VALUES
+(1, '12345678', 'Test', 'Usuario', '1990-01-01', 'test@example.com', '123456789', 'Prueba', NULL, '', '2026-07-01 16:42:18'),
+(2, '8-1037-904', 'Roniel', 'Quintero', '1959-12-12', 'rquinte14@gmail.com', '66662621', 'Betania, La Gloria, Ave 20C Norte', NULL, '', '2026-07-01 16:43:42'),
+(3, '9999999999', 'Firma', 'Test', '1990-01-01', 'firma@test.local', '600000000', 'Dirección prueba', NULL, '', '2026-07-01 16:59:08'),
+(4, '9999999999', 'Firma', 'Test', '1990-01-01', 'firma@test.local', '600000000', 'Dirección prueba', NULL, '', '2026-07-01 17:00:15'),
+(5, '8-1037-904', 'Roniel', 'Quintero', '0077-07-07', 'rquintedddd14@gmail.com', '66662621', 'Betania, La Gloria, Ave 20C Norte', NULL, '', '2026-07-01 17:21:01'),
+(6, '8-1037-904', 'Roniel', 'Quintero', '0655-05-06', 'rquintedddd14@gmail.com', '66662621', 'Betania, La Gloria, Ave 20C Norte', 4, '', '2026-07-01 17:28:25');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `perfiles_laborales`
+--
+
+DROP TABLE IF EXISTS `perfiles_laborales`;
+CREATE TABLE IF NOT EXISTS `perfiles_laborales` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `colaborador_id` int NOT NULL,
+  `ocupacion_id` int NOT NULL,
+  `tipo_planilla_id` int NOT NULL,
+  `salario` decimal(10,2) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `cargo_activo` tinyint(1) DEFAULT '1',
+  `empleado_activo` tinyint(1) DEFAULT '1',
+  `motivo` varchar(255) DEFAULT NULL,
+  `firma_digital` text,
+  PRIMARY KEY (`id`),
+  KEY `colaborador_id` (`colaborador_id`),
+  KEY `ocupacion_id` (`ocupacion_id`),
+  KEY `tipo_planilla_id` (`tipo_planilla_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `perfiles_laborales`
+--
+
+INSERT INTO `perfiles_laborales` (`id`, `colaborador_id`, `ocupacion_id`, `tipo_planilla_id`, `salario`, `fecha_inicio`, `fecha_fin`, `cargo_activo`, `empleado_activo`, `motivo`, `firma_digital`) VALUES
+(1, 2, 4, 2, 8888.00, '1995-12-12', '2000-12-12', 1, 0, 'Prueba', '36032c28b6b536149c8528769272480072534e9eedc272d224788c52fb8a1dab'),
+(2, 3, 1, 1, 1200.00, '2026-07-01', NULL, 1, 1, '', '17e7611af54bc536d39df8f427fd6069fd3ad78f8f807b5783d09a42e07b964a'),
+(3, 4, 1, 1, 1200.00, '2026-07-01', NULL, 1, 1, '', 'bca07b71cf68e79440f783527704eac2558670d4bb1d548cbbbdcc92cfaa70ce'),
+(4, 5, 15, 3, 7889.00, '1255-07-08', '0625-06-06', 0, 0, 'PRIVATIZACIÓN', 'uzRUzk4ZpI9LT9N0zOTZcmFESn06U4Gz+1c/cnHPl1WRgOXwuekrDyBkujurSPC4HY/l/1uwggbCxC3Dw2SCGQBrikSar8ibCyLQ8HbP5r44U93tfmTsIZxR7m0pJ7v6mEymi8ZCL6OEO4uFQlhLfqeejB8o4KiJrUAb8qPD0RkpMd9Th4s/Kk+lN0kFKs33pVIdOaPCbLBjz48TVm6xfggn0mY6T6AV9pVJJrWpHJ9rkUY9EsowAM1Zzbm6MqJb+p9/nL1b+gVfsnVURqRurIkO/AsQE3NzmVGPC+pxHO8RyDT1LwcyG43EnvPkb8UbfJnDd+4b9JFlYO4EH9N4qg=='),
+(5, 6, 62, 2, 4353.00, '0003-03-31', '2222-03-31', 1, 0, 'INMORALIDAD', 'i98VzYlcEFImXfY2E0us5uDnXYtaQsLmKJWGW7D18u5MyOhdDA011UCe02JVad3qhCKu7pOUOx7Iem3JCt47dwqDdxz5OgmtHKTcFzMTgZ8mP5kHft2l0ZrSZtsD1zuXpR+JYrVbMFHh1x2uuTb8IyU+6B9jEb6YHNrPtR7XExEt6w+h7JMb90ZDXOOisfOqAjuJTo4u9xeZC60uDNCptufJuDGe0KLGJXvfyebqcAl/G07JXbLD+LOkHssy1xOwW5f5tkFkcq09iY8MOrAw3i8mvMDyfk2PTOS1RAGC7C5IdtA7lQ3XXsKWxHbWXloewA9fpDG8IKxgYcj2/Z9srg==');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
