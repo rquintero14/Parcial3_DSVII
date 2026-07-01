@@ -22,6 +22,7 @@ class Colaborador
                     correo,
                     telefono,
                     direccion,
+                    estado_civil,
                     firma_digital
                 )
                 VALUES
@@ -33,6 +34,7 @@ class Colaborador
                     :correo,
                     :telefono,
                     :direccion,
+                    :estado_civil,
                     :firma_digital
                 )";
 
@@ -46,6 +48,7 @@ class Colaborador
             ':correo' => $datos['correo'],
             ':telefono' => $datos['telefono'],
             ':direccion' => $datos['direccion'],
+            ':estado_civil' => $datos['estado_civil'],
             ':firma_digital' => $datos['firma_digital']
         ]);
     }
@@ -54,6 +57,16 @@ class Colaborador
     {
         $sql = "SELECT * FROM colaboradores
                 ORDER BY nombre ASC";
+
+        return $this->cn->query($sql)->fetchAll();
+    }
+
+    public function listarEstadosCiviles()
+    {
+        $sql = "SELECT id, nombre
+                FROM cat_estadocivil
+                WHERE id > 1
+                ORDER BY id";
 
         return $this->cn->query($sql)->fetchAll();
     }
@@ -80,6 +93,7 @@ class Colaborador
                     correo = :correo,
                     telefono = :telefono,
                     direccion = :direccion,
+                    estado_civil = :estado_civil,
                     firma_digital = :firma_digital
                 WHERE id = :id";
 
@@ -94,6 +108,7 @@ class Colaborador
             ':correo' => $datos['correo'],
             ':telefono' => $datos['telefono'],
             ':direccion' => $datos['direccion'],
+            ':estado_civil' => $datos['estado_civil'],
             ':firma_digital' => $datos['firma_digital']
         ]);
     }

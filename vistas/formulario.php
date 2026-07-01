@@ -11,6 +11,7 @@ $perfilController = new PerfilLaboralController();
 $ocupaciones = $perfilController->listarOcupaciones();
 $tiposPlanilla = $perfilController->listarTiposPlanilla();
 $motivosBaja = $perfilController->listarMotivosTerminacion();
+$estadosCiviles = $colaboradorController->listarEstadosCiviles();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -23,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'correo' => $_POST['correo'],
         'telefono' => $_POST['telefono'],
         'direccion' => $_POST['direccion'] ?? '',
+        'estado_civil' => $_POST['estado_civil'] ?? null,
         'firma_digital' => ''
     ];
 
@@ -46,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'salario' => $_POST['salario'],
             'fecha_inicio' => $_POST['fecha_inicio'],
             'fecha_fin' => $_POST['fecha_fin'] ?: null,
-            'cargo_activo' => 1,
-            'empleado_activo' => empty($_POST['fecha_fin']) ? 1 : 0,
+            'cargo_activo' => isset($_POST['cargo_activo']) ? (int) $_POST['cargo_activo'] : 1,
+            'empleado_activo' => isset($_POST['empleado_activo']) ? (int) $_POST['empleado_activo'] : (empty($_POST['fecha_fin']) ? 1 : 0),
             'motivo' => $_POST['motivo'],
             'firma_digital' => $firma
 
@@ -100,6 +102,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <input type="text" name="telefono" placeholder="Teléfono" required>
 
+<select name="estado_civil" required>
+    <option value="">Estado Civil</option>
+    <?php foreach ($estadosCiviles as $estado): ?>
+        <option value="<?= htmlspecialchars($estado['id']); ?>">
+            <?= htmlspecialchars($estado['nombre']); ?>
+        </option>
+    <?php endforeach; ?>
+</select>
+
 <textarea name="direccion" placeholder="Dirección"></textarea>
 
 <h2>Perfil Laboral</h2>
@@ -129,6 +140,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <label>Fecha Fin</label>
 <input type="date" name="fecha_fin">
+
+<label>Cargo activo</label>
+<select name="cargo_activo">
+    <option value="1">Activo</option>
+    <option value="0">No activo</option>
+</select>
+
+<label>Empleado activo</label>
+<select name="empleado_activo">
+    <option value="1">Activo</option>
+    <option value="0">No activo</option>
+</select>
 
 <select name="motivo">
     <option value="">Motivo de baja</option>

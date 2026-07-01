@@ -56,6 +56,7 @@ $registros = $controller->listar();
                     <th>Apellido</th>
                     <th>Ocupación</th>
                     <th>Planilla</th>
+                    <th>Estado Civil</th>
                     <th>Salario</th>
                     <th>Fecha Inicio</th>
                     <th>Fecha Fin</th>
@@ -73,16 +74,17 @@ $registros = $controller->listar();
 
                     <?php
 
+                    $firmaCadena = FirmaDigital::generarCadenaPerfil(
+                        $fila['colaborador_id'],
+                        $fila['ocupacion_id'],
+                        $fila['tipo_planilla_id'],
+                        $fila['salario'],
+                        $fila['fecha_inicio']
+                    );
+
                     $firmaValida = FirmaDigital::verificarFirma(
-
-                        $fila['colaborador_id'] . "|" .
-                        $fila['ocupacion_id'] . "|" .
-                        $fila['tipo_planilla_id'] . "|" .
-                        $fila['salario'] . "|" .
-                        $fila['fecha_inicio'],
-
+                        $firmaCadena,
                         $fila['firma_digital']
-
                     );
 
                     ?>
@@ -98,6 +100,8 @@ $registros = $controller->listar();
                         <td><?= htmlspecialchars($fila['nombre_ocupacion']); ?></td>
 
                         <td><?= htmlspecialchars($fila['nombre_planilla']); ?></td>
+
+                        <td><?= htmlspecialchars($fila['estado_civil'] ?? 'N/A'); ?></td>
 
                         <td>$<?= number_format($fila['salario'], 2); ?></td>
 

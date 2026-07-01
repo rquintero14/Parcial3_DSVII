@@ -62,11 +62,14 @@ class PerfilLaboral
                     pl.*,
                     c.nombre,
                     c.apellido,
+                    ce.nombre AS estado_civil,
                     co.OCUPACION AS nombre_ocupacion,
                     tp.nombre_planilla
                 FROM perfiles_laborales pl
                 INNER JOIN colaboradores c
                     ON pl.colaborador_id = c.id
+                LEFT JOIN cat_estadocivil ce
+                    ON c.estado_civil = ce.id
                 INNER JOIN cat_ocupaciones co
                     ON pl.ocupacion_id = co.C_OCUP
                 INNER JOIN cat_tipos_planilla tp

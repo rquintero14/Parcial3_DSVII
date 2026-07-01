@@ -22,7 +22,8 @@ class ColaboradorController
                 empty($datos['apellido']) ||
                 empty($datos['fecha_nacimiento']) ||
                 empty($datos['correo']) ||
-                empty($datos['telefono'])
+                empty($datos['telefono']) ||
+                empty($datos['estado_civil'])
             ) {
                 throw new Exception("Todos los campos obligatorios deben ser completados.");
             }
@@ -64,5 +65,10 @@ class ColaboradorController
     public function obtenerUltimoId()
     {
         return $this->modelo->obtenerUltimoId();
+    }
+
+    public function listarEstadosCiviles()
+    {
+        return $this->modelo->listarEstadosCiviles();
     }
 }
