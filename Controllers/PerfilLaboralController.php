@@ -58,6 +58,21 @@ class PerfilLaboralController
         return $this->modelo->obtenerHistorial($colaboradorId);
     }
 
+    public function listarOcupaciones()
+    {
+        return $this->modelo->listarOcupaciones();
+    }
+
+    public function listarTiposPlanilla()
+    {
+        return $this->modelo->listarTiposPlanilla();
+    }
+
+    public function listarMotivosTerminacion()
+    {
+        return $this->modelo->listarMotivosTerminacion();
+    }
+
     public function finalizarCargo($id, $fechaFin, $motivo)
     {
         $perfil = $this->modelo->buscarPorId($id);

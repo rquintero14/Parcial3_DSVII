@@ -76,6 +76,34 @@ class PerfilLaboral
         return $this->cn->query($sql)->fetchAll();
     }
 
+    public function listarOcupaciones()
+    {
+        $sql = "SELECT C_OCUP, OCUPACION
+                FROM cat_ocupaciones
+                WHERE Activo = 1
+                ORDER BY OCUPACION";
+
+        return $this->cn->query($sql)->fetchAll();
+    }
+
+    public function listarTiposPlanilla()
+    {
+        $sql = "SELECT id, nombre_planilla
+                FROM cat_tipos_planilla
+                ORDER BY nombre_planilla";
+
+        return $this->cn->query($sql)->fetchAll();
+    }
+
+    public function listarMotivosTerminacion()
+    {
+        $sql = "SELECT C_TERMINACION, MOTIVO
+                FROM cat_motivos_terminacion
+                ORDER BY MOTIVO";
+
+        return $this->cn->query($sql)->fetchAll();
+    }
+
     public function buscarPorId($id)
     {
         $sql = "SELECT *
@@ -137,11 +165,11 @@ class PerfilLaboral
     {
         $sql = "SELECT
                     pl.*,
-                    co.nombre_ocupacion,
+                    co.OCUPACION AS nombre_ocupacion,
                     tp.nombre_planilla
                 FROM perfiles_laborales pl
                 INNER JOIN cat_ocupaciones co
-                    ON pl.ocupacion_id = co.id
+                    ON pl.ocupacion_id = co.C_OCUP
                 INNER JOIN cat_tipos_planilla tp
                     ON pl.tipo_planilla_id = tp.id
                 WHERE pl.colaborador_id = :id

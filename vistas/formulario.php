@@ -5,10 +5,14 @@ require_once '../Utils/FirmaDigital.php';
 
 $mensaje = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$colaboradorController = new ColaboradorController();
+$perfilController = new PerfilLaboralController();
 
-    $colaboradorController = new ColaboradorController();
-    $perfilController = new PerfilLaboralController();
+$ocupaciones = $perfilController->listarOcupaciones();
+$tiposPlanilla = $perfilController->listarTiposPlanilla();
+$motivosBaja = $perfilController->listarMotivosTerminacion();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $datosColaborador = [
 
@@ -101,19 +105,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <h2>Perfil Laboral</h2>
 
 <select name="ocupacion_id" required>
-<option value="">Ocupación</option>
-<option value="1">Secretaria</option>
-<option value="2">Ingeniero</option>
-<option value="3">Analista</option>
-<option value="4">Supervisor</option>
-<option value="5">Programador</option>
+    <option value="">Ocupación</option>
+    <?php foreach ($ocupaciones as $ocupacion): ?>
+        <option value="<?= htmlspecialchars($ocupacion['C_OCUP']); ?>">
+            <?= htmlspecialchars($ocupacion['OCUPACION']); ?>
+        </option>
+    <?php endforeach; ?>
 </select>
 
 <select name="tipo_planilla_id" required>
-<option value="">Planilla</option>
-<option value="1">Permanente</option>
-<option value="2">Eventual</option>
-<option value="3">Interino</option>
+    <option value="">Planilla</option>
+    <?php foreach ($tiposPlanilla as $planilla): ?>
+        <option value="<?= htmlspecialchars($planilla['id']); ?>">
+            <?= htmlspecialchars($planilla['nombre_planilla']); ?>
+        </option>
+    <?php endforeach; ?>
 </select>
 
 <input type="number" step="0.01" name="salario" placeholder="Salario" required>
@@ -124,7 +130,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <label>Fecha Fin</label>
 <input type="date" name="fecha_fin">
 
-<input type="text" name="motivo" placeholder="Motivo de baja">
+<select name="motivo">
+    <option value="">Motivo de baja</option>
+    <?php foreach ($motivosBaja as $motivo): ?>
+        <option value="<?= htmlspecialchars($motivo['MOTIVO']); ?>">
+            <?= htmlspecialchars($motivo['MOTIVO']); ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 
 <button type="submit">
 Guardar Registro
